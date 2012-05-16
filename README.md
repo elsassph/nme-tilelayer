@@ -75,8 +75,13 @@ TODO
 ----
  - actually change tile when setting .tile
  - add optional looping and complete callback to TileClip
- - FIX TileGroup to return correct width/height
+ - fix TileGroup width/height measurement
  - support useTint in Flash/JS fallback
+
+Known issues
+------------
+ - Tiles' size is null until they are added to the virtual display list,
+ - TileGroups inside TileGroup returns incorrect width/height.
 
 [1]:https://github.com/elsassph/nme-runnermark
 
