@@ -498,16 +498,21 @@ class TileClip extends TileSprite, implements Public
 	function stop() { animated = false; }
 
 	var currentFrame(get_currentFrame, set_currentFrame):Int;
-
 	function get_currentFrame():Int 
 	{
 		var frame:Int = Math.floor((time / 1000) * fps);
-		return frame % indices.length;
+		return frame % totalFrames;
 	}
 	function set_currentFrame(value:Int):Int 
 	{
 		time = cast 1000 * value / fps;
 		return value;
+	}
+
+	var totalFrames(get_totalFrames, null):Int;
+	inline function get_totalFrames():Int
+	{
+		return indices.length;
 	}
 }
 
