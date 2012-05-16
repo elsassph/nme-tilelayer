@@ -1,0 +1,6 @@
+<project name="tilelayer" url="http://github.com/elsassph/nme-tilelayer" license="MIT">
+    <user name="elsassph"/>
+    <tag v="nme"/>
+    <description>Lightweight wrapper over NME's powerful but lowlevel 'drawTiles', with bitmap-based fallback for Flash/JS.</description>
+    <version name="1.0.0">1.0.0</version>
+</project>
