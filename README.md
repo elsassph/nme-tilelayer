@@ -1,13 +1,15 @@
 nme-tilelayer
 =============
 
-A lightweight wrapper over NME's powerful but lowlevel 'drawTiles' which offers the rendering performance on native platforms.
+A lightweight wrapper over NME's powerful but lowlevel 'drawTiles' which offers the best rendering performance 
+(ie. batching) on native platforms.
 
 **See [NME RunnerMark][1] for a sample project using this library.**
 
- - provides a basic display-list, spritesheet animations, mirroring,
+ - provides a basic display-list, spritesheet animations, mirroring (tile flipping), scale X/Y,
  - includes a Sparrow spritesheet parser, supporting trimming,
- - uses Bitmaps for Flash & HTML5 target rendering (almost complete) instead of the limited, and a bit slow, drawTriangles fallback.
+ - uses (and caches computations of) the new drawTiles' transform2x2 for native platforms,
+ - uses Bitmaps for Flash & HTML5 target rendering.
 
 Usage
 -----
@@ -32,6 +34,10 @@ Usage
     group.addChild(new TileSprite("othername"));
     group.addChild(new TileClip("yetanother"));
     layer.dom.addChild(group);
+    
+    // batch it!
+    addChild(layer);
+    layer.render();
 
 Features
 --------
@@ -54,7 +60,7 @@ Features
  - r / g / b
  - width / height *(readonly)*
 
-**TileClipd properties**
+**TileClip properties**
  - animated
  - currentFrame
  - totalFrames
