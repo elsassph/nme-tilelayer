@@ -23,27 +23,27 @@ Usage
         
     // static tile
     var sprite = new TileSprite("spritename");
-    layer.dom.addChild(sprite);
+    layer.addChild(sprite);
     
     // animated tile
     var clip = new TileClip("animname");
-    layer.dom.addChild(clip);
+    layer.addChild(clip);
     
     // tile group (only translation)
     var group = new TileGroup();
     group.addChild(new TileSprite("othername"));
     group.addChild(new TileClip("yetanother"));
-    layer.dom.addChild(group);
+    layer.addChild(group);
     
     // batch it!
-    addChild(layer);
+    addChild(layer.view); // layer is NOT a DisplayObject
     layer.render();
 
 Features
 --------
 
 **TileLayer properties**
- - dom *(root TileGroup)*
+ - view *(root DisplayObject)*
  - useAlpha *(default true)*
  - useTransforms *(default true)*
  - useSmoothing

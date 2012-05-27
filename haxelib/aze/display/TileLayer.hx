@@ -17,9 +17,9 @@ import nme.Lib;
  * Features basic containers (TileGroup) and spritesheets animations.
  * @author Philippe / http://philippe.elsass.me
  */
-class TileLayer extends Sprite
+class TileLayer extends TileGroup
 {
-	public var dom:TileGroup;
+	public var view:Sprite;
 	public var useSmoothing:Bool;
 	public var useAdditive:Bool;
 	public var useAlpha:Bool;
@@ -32,7 +32,10 @@ class TileLayer extends Sprite
 	public function new(tilesheet:TilesheetEx, smooth:Bool=false, additive:Bool=false)
 	{
 		super();
-		mouseChildren = false;
+
+		view = new Sprite();
+		view.mouseEnabled = false;
+		view.mouseChildren = false;
 
 		this.tilesheet = tilesheet;
 		useSmoothing = smooth;
@@ -40,21 +43,20 @@ class TileLayer extends Sprite
 		useAlpha = true;
 		useTransforms = true;
 
-		dom = new TileGroup();
-		dom.init(this);
+		init(this);
 		drawList = new DrawList();
 	}
 
 	public function render()
 	{
 		drawList.begin(useTransforms, useAlpha, useTint, useAdditive);
-		renderGroup(dom, 0, 0, 0);
+		renderGroup(this, 0, 0, 0);
 		drawList.end();
 		#if (flash||js)
-		addChild(dom.view);
+		view.addChild(container);
 		#else
-		graphics.clear();
-		tilesheet.drawTiles(graphics, drawList.list, useSmoothing, drawList.flags);
+		view.graphics.clear();
+		tilesheet.drawTiles(view.graphics, drawList.list, useSmoothing, drawList.flags);
 		#end
 	}
 
@@ -69,8 +71,8 @@ class TileLayer extends Sprite
 		gx += group.x;
 		gy += group.y;
 		#if (flash||js)
-		group.view.x = gx;
-		group.view.y = gy;
+		group.container.x = gx;
+		group.container.y = gy;
 		var blend = useAdditive ? BlendMode.ADD : BlendMode.NORMAL;
 		#end
 
@@ -86,13 +88,13 @@ class TileLayer extends Sprite
 				if (sprite.animated) sprite.step(elapsed);
 
 				#if (flash||js)
-				var m = sprite.view.transform.matrix;
+				var m = sprite.bmp.transform.matrix;
 				m.identity();
 				m.concat(sprite.matrix);
 				m.translate(sprite.x, sprite.y);
-				sprite.view.transform.matrix = m;
-				sprite.view.blendMode = blend;
-				sprite.view.alpha = sprite.alpha;
+				sprite.bmp.transform.matrix = m;
+				sprite.bmp.blendMode = blend;
+				sprite.bmp.alpha = sprite.alpha;
 				// TODO apply tint
 
 				#else
@@ -127,13 +129,12 @@ class TileBase implements Public
 	var parent:TileGroup;
 	var x:Float;
 	var y:Float;
-	#if (flash||js)
-	var view:DisplayObject;
-	#end
 
 	function new()
 	{
 		x = y = 0;
+		parent = null;
+		layer = null;
 	}
 
 	function init(layer:TileLayer):Void
@@ -141,18 +142,25 @@ class TileBase implements Public
 		this.layer = layer;
 		// override to init
 	}
+
+	#if (flash||js)
+	function getView():DisplayObject { return null; }
+	#end
 }
 
 class TileGroup extends TileBase, implements Public
 {
 	var children:Array<TileBase>;
+	#if (flash||js)
+	var container:Sprite;
+	#end
 
 	function new()
 	{
 		super();
 		children = new Array<TileBase>();
 		#if (flash||js)
-		view = new Sprite();
+		container = new Sprite();
 		#end
 	}
 
@@ -161,6 +169,10 @@ class TileGroup extends TileBase, implements Public
 		this.layer = layer;
 		initChildren();
 	}
+
+	#if (flash||js)
+	override function getView():DisplayObject { return container; }
+	#end
 
 	function initChild(item:TileBase)
 	{
@@ -183,8 +195,7 @@ class TileGroup extends TileBase, implements Public
 	function addChild(item:TileBase)
 	{
 		#if (flash||js)
-		var sprite:Sprite = cast view;
-		sprite.addChild(item.view);
+		container.addChild(item.getView());
 		#end
 		removeChild(item);
 		initChild(item);
@@ -194,8 +205,7 @@ class TileGroup extends TileBase, implements Public
 	function addChildAt(item:TileBase, index:Int)
 	{
 		#if (flash||js)
-		var sprite:Sprite = cast view;
-		sprite.addChildAt(item.view, index);
+		container.addChildAt(item.getView(), index);
 		#end
 		removeChild(item);
 		initChild(item);
@@ -214,8 +224,7 @@ class TileGroup extends TileBase, implements Public
 		if (index >= 0) 
 		{
 			#if (flash||js)
-			var sprite:Sprite = cast view;
-			sprite.removeChild(item.view);
+			container.removeChild(item.getView());
 			#end
 			children.splice(index, 1);
 			item.parent = null;
@@ -226,8 +235,7 @@ class TileGroup extends TileBase, implements Public
 	function removeChildAt(index:Int)
 	{
 		#if (flash||js)
-		var sprite:Sprite = cast view;
-		sprite.removeChildAt(index);
+		container.removeChildAt(index);
 		#end
 		var res = children.splice(index, 1);
 		res[0].parent = null;
@@ -296,6 +304,7 @@ class TileSprite extends TileBase
 	var _transform:Array<Float>;
 	#else
 	var _matrix:Matrix;
+	var bmp:Bitmap;
 	#end
 
 	public var alpha:Float;
@@ -308,11 +317,17 @@ class TileSprite extends TileBase
 		super();
 		_rotation = 0;
 		alpha = _scaleX = _scaleY = 1;
+		_mirror = 0;
 		dirty = true;
 		this.tile = tile;
+		size = null;
+		indice = 0;
 		#if (flash||js)
-		view = new Bitmap();
-		view.y = -9999;
+		bmp = new Bitmap();
+		bmp.y = -9999; // jeash flicker
+		_matrix = new Matrix();
+		#else
+		_transform = new Array<Float>();
 		#end
 	}
 
@@ -324,11 +339,14 @@ class TileSprite extends TileBase
 		size = layer.tilesheet.getSize(indice);
 	}
 
+	#if (flash||js)
+	override function getView():DisplayObject { return bmp; }
+	#end
+
 	function setIndice(index:Int)
 	{
 		indice = index;
 		#if (flash||js)
-		var bmp:Bitmap = cast view;
 		bmp.bitmapData = layer.tilesheet.getBitmap(index);
 		bmp.smoothing = layer.useSmoothing;
 		#end
@@ -367,7 +385,8 @@ class TileSprite extends TileBase
 	}
 	function set_scale(value:Float):Float {
 		if (_scaleX != value) {
-			_scaleX = _scaleY = value;
+			_scaleX = value;
+			_scaleY = value;
 			dirty = true;
 		}
 		return value;
@@ -401,8 +420,7 @@ class TileSprite extends TileBase
 	public var transform(get_transform, null):Array<Float>;
 	function get_transform():Array<Float>
 	{
-		if (_transform == null) _transform = new Array<Float>();
-		if (dirty) 
+		if (dirty == true) 
 		{
 			dirty = false;
 			var dirX:Int = mirror == 1 ? -1 : 1;
@@ -429,8 +447,7 @@ class TileSprite extends TileBase
 	public var matrix(get_matrix, null):Matrix;
 	function get_matrix():Matrix 
 	{ 
-		if (_matrix == null) _matrix = new Matrix();
-		if (dirty)
+		if (dirty == true)
 		{
 			dirty = false;
 			var tileWidth = width / 2;
@@ -476,8 +493,9 @@ class TileClip extends TileSprite, implements Public
 	{
 		super(tile);
 		this.fps = fps;
-		this.animated = true;
+		animated = true;
 		time = 0;
+		indices = null;
 	}
 
 	override function init(layer:TileLayer):Void
@@ -498,21 +516,16 @@ class TileClip extends TileSprite, implements Public
 	function stop() { animated = false; }
 
 	var currentFrame(get_currentFrame, set_currentFrame):Int;
+
 	function get_currentFrame():Int 
 	{
 		var frame:Int = Math.floor((time / 1000) * fps);
-		return frame % totalFrames;
+		return frame % indices.length;
 	}
 	function set_currentFrame(value:Int):Int 
 	{
 		time = cast 1000 * value / fps;
 		return value;
-	}
-
-	var totalFrames(get_totalFrames, null):Int;
-	inline function get_totalFrames():Int
-	{
-		return indices.length;
 	}
 }
 
