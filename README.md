@@ -13,6 +13,10 @@ A lightweight wrapper over NME's powerful but lowlevel 'drawTiles' which offers 
 
 Usage
 -----
+- install the library: type `haxelib install tilelayer` in your terminal
+- add `<haxelib name="tilelayer" />` in your nmml
+
+Configure it:
 
     // sprite sheet
     var tilesheet = new SparrowTilesheet(
@@ -20,7 +24,9 @@ Usage
     
     // tile-layer
     var layer = new TileLayer(tilesheet); // optional flags: smoothing, additive blendmode
-        
+
+Add/manipulate elements as a display list:
+
     // static tile
     var sprite = new TileSprite("spritename");
     layer.addChild(sprite);
@@ -34,7 +40,9 @@ Usage
     group.addChild(new TileSprite("othername"));
     group.addChild(new TileClip("yetanother"));
     layer.addChild(group);
-    
+
+Render it:
+
     // batch it!
     addChild(layer.view); // layer is NOT a DisplayObject
     layer.render();
