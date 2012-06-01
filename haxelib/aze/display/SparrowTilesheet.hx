@@ -44,33 +44,32 @@ class SparrowTilesheet extends Tilesheet, implements TilesheetEx
 		#end
 
 		var ins = new Point(0,0);
-		
-		var x = Xml.parse(xml);
-		for (node in x.elements())
-			for (texture in node.elements())
-			{
-				defs.push(texture.get("name"));
-				var r = new Rectangle(
-					Std.parseInt(texture.get("x")), Std.parseInt(texture.get("y")),
-					Std.parseInt(texture.get("width")), Std.parseInt(texture.get("height")));
+		var x = new haxe.xml.Fast( Xml.parse(xml).firstElement() );
 
-				var s = if (texture.get("frameX") != null)
-						new Rectangle(
-							Std.parseInt(texture.get("frameX")), Std.parseInt(texture.get("frameY")),
-							Std.parseInt(texture.get("frameWidth")), Std.parseInt(texture.get("frameHeight")));
-					else 
-						new Rectangle(0,0, r.width, r.height);
-				sizes.push(s);
-				#if (flash||js)
-				var bmp = new BitmapData(cast s.width, cast s.height, true, 0);
-				ins.x = -s.left;
-				ins.y = -s.top;
-				bmp.copyPixels(img, r, ins);
-				bmps.push(bmp);
-				#else
-				addTileRect(r, new Point(s.x + s.width / 2, s.y + s.height / 2));
-				#end
-			}
+		for (texture in x.nodes.SubTexture)
+		{
+			defs.push(texture.att.name);
+			var r = new Rectangle(
+				Std.parseInt(texture.att.x), Std.parseInt(texture.att.y),
+				Std.parseInt(texture.att.width), Std.parseInt(texture.att.height));
+
+			var s = if (texture.has.frameX)
+					new Rectangle(
+						Std.parseInt(texture.att.frameX), Std.parseInt(texture.att.frameY),
+						Std.parseInt(texture.att.frameWidth), Std.parseInt(texture.att.frameHeight));
+				else 
+					new Rectangle(0,0, r.width, r.height);
+			sizes.push(s);
+			#if (flash||js)
+			var bmp = new BitmapData(cast s.width, cast s.height, true, 0);
+			ins.x = -s.left;
+			ins.y = -s.top;
+			bmp.copyPixels(img, r, ins);
+			bmps.push(bmp);
+			#else
+			addTileRect(r, new Point(s.x + s.width / 2, s.y + s.height / 2));
+			#end
+		}
 	}
 
 	public function getAnim(name:String):Array<Int>
