@@ -23,35 +23,41 @@ Usage
 
 Configure it:
 
-    // sprite sheet
-    var tilesheet = new SparrowTilesheet(
-        Assets.getBitmapData("assets/spritesheet.png"), Assets.getText("assets/spritesheet.xml"));
-    
-    // tile-layer
-    var layer = new TileLayer(tilesheet); // optional flags: smoothing, additive blendmode
+```as3
+// sprite sheet
+var tilesheet = new SparrowTilesheet(
+    Assets.getBitmapData("assets/spritesheet.png"), Assets.getText("assets/spritesheet.xml"));
+
+// tile-layer
+var layer = new TileLayer(tilesheet); // optional flags: smoothing, additive blendmode
+```
 
 Add/manipulate elements as a display list:
 
-    // static tile
-    var sprite = new TileSprite("spritename");
-    layer.addChild(sprite);
-    
-    // animated tile
-    var clip = new TileClip("animname");
-    clip.loop = false;
-    layer.addChild(clip);
-    
-    // tile group (only translation, use the TileGroupTransform behaviour for more)
-    var group = new TileGroup();
-    group.addChild(new TileSprite("othername"));
-    group.addChild(new TileClip("yetanother"));
-    layer.addChild(group);
+```as3
+// static tile
+var sprite = new TileSprite("spritename");
+layer.addChild(sprite);
+
+// animated tile
+var clip = new TileClip("animname");
+clip.loop = false;
+layer.addChild(clip);
+
+// tile group (only translation, use the TileGroupTransform behaviour for more)
+var group = new TileGroup();
+group.addChild(new TileSprite("othername"));
+group.addChild(new TileClip("yetanother"));
+layer.addChild(group);
+```
 
 Render it:
 
-    // batch it!
-    addChild(layer.view); // layer is NOT a DisplayObject
-    layer.render();
+```as3
+// batch it!
+addChild(layer.view); // layer is NOT a DisplayObject
+layer.render();
+```
 
 Tiles Features
 --------------
