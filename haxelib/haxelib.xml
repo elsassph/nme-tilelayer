@@ -2,5 +2,5 @@
     <user name="elsassph"/>
     <tag v="nme"/>
     <description>Lightweight wrapper over NME's powerful but lowlevel 'drawTiles', with bitmap-based fallback for Flash/JS. Includes a Sparrow spritesheets parser supporting animations and trimming.</description>
-    <version name="0.1.0">Initial release</version>
+    <version name="0.2">Refactoring, added TileGroupTransform behaviour</version>
 </project>

@@ -8,6 +8,8 @@ import nme.Lib;
 
 using StringTools;
 
+
+// graceful Jeash compatibility
 #if js
 class Tilesheet { 
 	function new(img:BitmapData) {
@@ -19,8 +21,10 @@ typedef Tilesheet = nme.display.Tilesheet;
 
 
 /**
- * Sparrow spritesheet parser (supports trimmed PNGs)
- * compatible with TileLayer.
+ * Sparrow spritesheet parser for TileLayer
+ * - supports animations
+ * - supports sprite trimming
+ * - does NOT support sprite rotation
  * @author Philippe / http://philippe.elsass.me
  */
 class SparrowTilesheet extends Tilesheet, implements TilesheetEx
@@ -53,13 +57,14 @@ class SparrowTilesheet extends Tilesheet, implements TilesheetEx
 				Std.parseInt(texture.att.x), Std.parseInt(texture.att.y),
 				Std.parseInt(texture.att.width), Std.parseInt(texture.att.height));
 
-			var s = if (texture.has.frameX)
+			var s = if (texture.has.frameX) // trimmed
 					new Rectangle(
 						Std.parseInt(texture.att.frameX), Std.parseInt(texture.att.frameY),
 						Std.parseInt(texture.att.frameWidth), Std.parseInt(texture.att.frameHeight));
 				else 
 					new Rectangle(0,0, r.width, r.height);
 			sizes.push(s);
+
 			#if (flash||js)
 			var bmp = new BitmapData(cast s.width, cast s.height, true, 0);
 			ins.x = -s.left;
