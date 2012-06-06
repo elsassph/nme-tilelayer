@@ -10,7 +10,7 @@ A lightweight and very optimized wrapper over NME's powerful but lowlevel 'drawT
  - includes a Sparrow spritesheet parser, supporting trimming,
  - uses (and caches computations of) the new drawTiles' transform2x2 for native platforms,
  - uses Bitmaps for Flash & HTML5 target rendering,
- - very optimized caching and memory management.
+ - very optimized memory management, near-zero garbage collection.
 
 Usage
 -----
@@ -68,6 +68,7 @@ Features
  - mirror *(1: horizontal, 2: vertical)*
  - r / g / b
  - width / height *(readonly)*
+ - visible
 
 **TileClip properties**
  - animated
@@ -78,6 +79,7 @@ Features
 **TileGroup**
  - x, y
  - width / height *(readonly, buggy)*
+ - visible
  - addChild / addChildAt / removeChild / removeChildAt
  - if you want to transform a TileGroup, use the TileGroupTransform behaviour
 
