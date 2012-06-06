@@ -1,7 +1,7 @@
 nme-tilelayer
 =============
 
-A lightweight wrapper over NME's powerful but lowlevel 'drawTiles' which offers the best rendering performance 
+A lightweight and very optimized wrapper over NME's powerful but lowlevel 'drawTiles' which offers the best rendering performance 
 (ie. batching) on native platforms.
 
 **See [NME RunnerMark][1] for a sample project using this library.**
@@ -9,7 +9,8 @@ A lightweight wrapper over NME's powerful but lowlevel 'drawTiles' which offers 
  - provides a basic display-list, spritesheet animations, mirroring (tile flipping), scale X/Y,
  - includes a Sparrow spritesheet parser, supporting trimming,
  - uses (and caches computations of) the new drawTiles' transform2x2 for native platforms,
- - uses Bitmaps for Flash & HTML5 target rendering.
+ - uses Bitmaps for Flash & HTML5 target rendering,
+ - very optimized caching and memory management.
 
 Usage
 -----
@@ -78,6 +79,7 @@ Features
  - x, y
  - width / height *(readonly, buggy)*
  - addChild / addChildAt / removeChild / removeChildAt
+ - if you want to transform a TileGroup, use the TileGroupTransform behaviour
 
 TODO
 ----

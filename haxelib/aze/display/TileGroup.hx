@@ -35,7 +35,7 @@ class TileGroup extends TileBase
 	}
 
 	#if (flash||js)
-	override function getView():DisplayObject { return container; }
+	override public function getView():DisplayObject { return container; }
 	#end
 
 	function initChild(item:TileBase)

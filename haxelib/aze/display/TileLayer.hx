@@ -86,7 +86,12 @@ class TileLayer extends TileGroup
 			if (child.animated) child.step(elapsed);
 			if (!child.visible) continue;
 
+			#if (flash||js)
+			var group:TileGroup = Std.is(child, TileGroup) ? cast child : null;
+			#else
 			var group:TileGroup = cast child;
+			#end
+
 			if (group != null) 
 			{
 				index = renderGroup(group, index, gx, gy);
@@ -259,6 +264,5 @@ class DrawList implements Public
 	{
 		if (list.length > index) 
 			list.splice(index, list.length - index);
-		trace(list.length / fields);
 	}
 }

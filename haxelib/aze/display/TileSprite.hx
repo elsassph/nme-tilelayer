@@ -3,6 +3,7 @@ package aze.display;
 import aze.display.TileLayer;
 import nme.geom.Matrix;
 import nme.display.Bitmap;
+import nme.display.DisplayObject;
 import nme.geom.Rectangle;
 
 /**
@@ -25,7 +26,7 @@ class TileSprite extends TileBase
 	var _transform:Array<Float>;
 	#else
 	var _matrix:Matrix;
-	var bmp:Bitmap;
+	public var bmp:Bitmap;
 	#end
 
 	public var alpha:Float;
@@ -60,7 +61,7 @@ class TileSprite extends TileBase
 	}
 
 	#if (flash||js)
-	override function getView():DisplayObject { return bmp; }
+	override public function getView():DisplayObject { return bmp; }
 	#end
 
 	function setIndice(index:Int)
