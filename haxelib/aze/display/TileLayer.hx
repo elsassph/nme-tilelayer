@@ -99,7 +99,7 @@ class TileLayer extends TileGroup
 			else 
 			{
 				var sprite:TileSprite = cast child;
-				if (sprite.alpha == 0.0) continue;
+				if (sprite.alpha <= 0.0) continue;
 
 				#if (flash||js)
 				var m = sprite.bmp.transform.matrix;
@@ -218,11 +218,13 @@ class DrawList implements Public
 	var flags:Int;
 	var time:Int;
 	var elapsed:Int;
+	var runs:Int;
 
 	function new() 
 	{
 		list = new Array<Float>();
 		elapsed = 0;
+		runs = 0;
 	}
 
 	function begin(useTransforms:Bool, useAlpha:Bool, useTint:Bool, useAdditive:Bool) 
@@ -263,6 +265,20 @@ class DrawList implements Public
 	function end()
 	{
 		if (list.length > index) 
-			list.splice(index, list.length - index);
+		{
+			if (++runs > 60) 
+			{
+				list.splice(index, list.length - index); // compact buffer
+				runs = 0;
+			}
+			else
+			{
+				while (index < list.length)
+				{
+					list[index + 2] = -2.0; // set invalid ID
+					index += fields;
+				}
+			}
+		}
 	}
 }
