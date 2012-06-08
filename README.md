@@ -12,6 +12,10 @@ A lightweight and very optimized wrapper over NME's powerful but lowlevel 'drawT
  - uses Bitmaps for Flash & HTML5 target rendering,
  - very optimized memory management, near-zero garbage collection.
 
+**Warning:** TileLayer is a "batching" class so it should be used to display "many elements" - that means you should 
+include as many sprites/anims as possible in the spritesheet. Creating many TileLayers is conter-productive, because 
+having many textures and not doing batching is inefficient for GPU performance.
+
 Usage
 -----
 - install the library: type `haxelib install tilelayer` in your terminal
@@ -36,7 +40,7 @@ Add/manipulate elements as a display list:
     var clip = new TileClip("animname");
     layer.addChild(clip);
     
-    // tile group (only translation)
+    // tile group (only translation, use the TileGroupTransform behaviour for more)
     var group = new TileGroup();
     group.addChild(new TileSprite("othername"));
     group.addChild(new TileClip("yetanother"));
@@ -81,7 +85,6 @@ Features
  - width / height *(readonly, buggy)*
  - visible
  - addChild / addChildAt / removeChild / removeChildAt
- - if you want to transform a TileGroup, use the TileGroupTransform behaviour
 
 TODO
 ----
