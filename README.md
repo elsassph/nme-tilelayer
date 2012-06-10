@@ -38,6 +38,7 @@ Add/manipulate elements as a display list:
     
     // animated tile
     var clip = new TileClip("animname");
+    clip.loop = false;
     layer.addChild(clip);
     
     // tile group (only translation, use the TileGroupTransform behaviour for more)
@@ -91,7 +92,6 @@ Features
 TODO
 ----
  - actually change tile when setting .tile
- - add optional looping and complete callback to TileClip
  - fix TileGroup width/height measurement
  - support useTint in Flash/JS fallback
 
