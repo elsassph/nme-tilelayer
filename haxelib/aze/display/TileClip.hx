@@ -43,9 +43,10 @@ class TileClip extends TileSprite
 		prevFrame = newFrame;
 		if (looping)
 		{
-			if (!loop) {
+			if (!loop) 
+			{
 				animated = false;
-				currentFrame = totalFrames;
+				currentFrame = totalFrames - 1;
 			}
 			if (onComplete != null) onComplete(this);
 		}
@@ -56,8 +57,8 @@ class TileClip extends TileSprite
 	{ 
 		if (!animated) 
 		{
-			animated = true; 
-			if (currentFrame == totalFrames)
+			animated = true;
+			if (currentFrame == totalFrames - 1)
 			{
 				currentFrame = 0;
 				prevFrame = -1;
@@ -75,7 +76,8 @@ class TileClip extends TileSprite
 	}
 	function set_currentFrame(value:Int):Int 
 	{
-		time = cast 1000 * value / fps;
+		if (value >= totalFrames) value = totalFrames - 1;
+		time = Math.floor(1000 * value / fps);
 		return value;
 	}
 
