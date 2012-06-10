@@ -76,8 +76,10 @@ Features
 
 **TileClip properties**
  - animated
+ - loop
  - currentFrame
  - totalFrames
+ - onComplete (TileClip->Void)
  - play / stop
 
 **TileGroup**
