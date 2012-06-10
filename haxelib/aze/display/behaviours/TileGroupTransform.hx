@@ -70,3 +70,28 @@ class TileGroupTransform
 	}
 }
 
+/**
+ * A TileSprite shadow copy of its transforms for use by behaviours
+ */
+class TileSpriteProxy implements haxe.Public
+{
+	var sprite:TileSprite;
+	var x:Float;
+	var y:Float;
+	var rotation:Float;
+	var scaleX:Float;
+	var scaleY:Float;
+	var alpha:Float;
+	var tag:Float;
+
+	function new(sprite:TileSprite)
+	{
+		this.sprite = sprite;
+		x = sprite.x;
+		y = sprite.y;
+		rotation = sprite.rotation;
+		scaleX = sprite.scaleX;
+		scaleY = sprite.scaleY;
+		alpha = sprite.alpha;
+	}
+}
