@@ -58,20 +58,20 @@ class TileGroup extends TileBase
 
 	public function addChild(item:TileBase)
 	{
+		removeChild(item);
 		#if (flash||js)
 		container.addChild(item.getView());
 		#end
-		removeChild(item);
 		initChild(item);
 		return children.push(item);
 	}
 
 	public function addChildAt(item:TileBase, index:Int)
 	{
+		removeChild(item);
 		#if (flash||js)
 		container.addChildAt(item.getView(), index);
 		#end
-		removeChild(item);
 		initChild(item);
 		children.insert(index, item);
 		return index;
