@@ -48,7 +48,7 @@ class TileClip extends TileSprite
 				animated = false;
 				currentFrame = totalFrames - 1;
 			}
-			setIndice(frames[newFrame]);
+			else setIndice(frames[newFrame]);
 			if (onComplete != null) onComplete(this);
 		}
 		else setIndice(frames[newFrame]);
