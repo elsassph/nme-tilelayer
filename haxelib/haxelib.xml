@@ -2,5 +2,5 @@
     <user name="elsassph"/>
     <tag v="nme"/>
     <description>Lightweight wrapper over NME's powerful but lowlevel 'drawTiles', with bitmap-based fallback for Flash/JS. Includes a Sparrow spritesheets parser supporting animations and trimming.</description>
-    <version name="0.2.1">TileClip animations looping/complete event</version>
+    <version name="0.2.2">Proxy scale property</version>
 </project>
