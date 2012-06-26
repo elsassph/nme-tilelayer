@@ -30,7 +30,7 @@ class TileClip extends TileSprite
 	{
 		this.layer = layer;
 		frames = layer.tilesheet.getAnim(tile);
-		setIndice(frames[0]);
+		indice = frames[0];
 		size = layer.tilesheet.getSize(indice);
 	}
 
@@ -48,10 +48,10 @@ class TileClip extends TileSprite
 				animated = false;
 				currentFrame = totalFrames - 1;
 			}
-			else setIndice(frames[newFrame]);
+			else indice = frames[newFrame];
 			if (onComplete != null) onComplete(this);
 		}
-		else setIndice(frames[newFrame]);
+		else indice = frames[newFrame];
 	}
 
 	public function play() 
@@ -78,7 +78,8 @@ class TileClip extends TileSprite
 	function set_currentFrame(value:Int):Int 
 	{
 		if (value >= totalFrames) value = totalFrames - 1;
-		time = Math.floor(1000 * value / fps);
+		time = Math.floor(1000 * value / fps) + 1;
+		indice = frames[value];
 		return value;
 	}
 

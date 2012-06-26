@@ -12,8 +12,8 @@ import nme.geom.Rectangle;
  */
 class TileSprite extends TileBase
 {
-	public var tile:String;
-	public var indice:Int;
+	var _tile:String;
+	var _indice:Int;
 	var size:Rectangle;
 
 	var dirty:Bool;
@@ -42,7 +42,7 @@ class TileSprite extends TileBase
 		_mirror = 0;
 		dirty = true;
 		this.tile = tile;
-		indice = 0;
+		_indice = -1;
 		#if (flash||js)
 		bmp = new Bitmap();
 		bmp.y = -9999; // jeash flicker
@@ -56,7 +56,7 @@ class TileSprite extends TileBase
 	{
 		this.layer = layer;
 		var indices = layer.tilesheet.getAnim(tile);
-		setIndice(indices[0]);
+		indice = indices[0];
 		size = layer.tilesheet.getSize(indice);
 	}
 
@@ -64,13 +64,30 @@ class TileSprite extends TileBase
 	override public function getView():DisplayObject { return bmp; }
 	#end
 
-	function setIndice(index:Int)
+	public var tile(get_tile, set_tile):String;
+	inline function get_tile():String { return _tile; }
+	function set_tile(value:String):String
 	{
-		indice = index;
-		#if (flash||js)
-		bmp.bitmapData = layer.tilesheet.getBitmap(index);
-		bmp.smoothing = layer.useSmoothing;
-		#end
+		if (_tile != value) {
+			_tile = value;
+			if (layer != null) init(layer); // update visual
+		}
+		return value;
+	}
+
+	public var indice(get_indice, set_indice):Int;
+	inline function get_indice():Int { return _indice; }
+	function set_indice(value:Int)
+	{
+		if (_indice != value)
+		{
+			_indice = value;
+			#if (flash||js)
+			bmp.bitmapData = layer.tilesheet.getBitmap(value);
+			bmp.smoothing = layer.useSmoothing;
+			#end
+		}
+		return value;
 	}
 
 	public var mirror(get_mirror, set_mirror):Int;

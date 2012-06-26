@@ -19,6 +19,8 @@ import nme.Lib;
  */
 class TileLayer extends TileGroup
 {
+	static var synchronizedElapsed:Float;
+
 	public var view:Sprite;
 	public var useSmoothing:Bool;
 	public var useAdditive:Bool;
@@ -47,9 +49,9 @@ class TileLayer extends TileGroup
 		drawList = new DrawList();
 	}
 
-	public function render()
+	public function render(?elapsed:Int)
 	{
-		drawList.begin(useTransforms, useAlpha, useTint, useAdditive);
+		drawList.begin(elapsed == null ? 0 : elapsed, useTransforms, useAlpha, useTint, useAdditive);
 		renderGroup(this, 0, 0, 0);
 		drawList.end();
 		#if (flash||js)
@@ -227,7 +229,7 @@ class DrawList implements Public
 		runs = 0;
 	}
 
-	function begin(useTransforms:Bool, useAlpha:Bool, useTint:Bool, useAdditive:Bool) 
+	function begin(elapsed:Int, useTransforms:Bool, useAlpha:Bool, useTint:Bool, useAdditive:Bool) 
 	{
 		#if (cpp||neko)
 		flags = 0;
@@ -253,13 +255,17 @@ class DrawList implements Public
 		if (useAdditive) flags |= neash.display.Graphics.TILE_BLEND_ADD;
 		#end
 
-		index = 0;
-		if (time > 0) {
-			var t = Lib.getTimer();
-			elapsed = cast Math.min(67, t - time);
-			time = t;
+		if (elapsed > 0) this.elapsed = elapsed;
+		else
+		{
+			index = 0;
+			if (time > 0) {
+				var t = Lib.getTimer();
+				this.elapsed = cast Math.min(67, t - time);
+				time = t;
+			}
+			else time = Lib.getTimer();
 		}
-		else time = Lib.getTimer();
 	}
 
 	function end()
