@@ -101,9 +101,19 @@ class TileGroup extends TileBase
 		#if (flash||js)
 		container.removeChildAt(index);
 		#end
-		var res = children.splice(index, 1);
-		res[0].parent = null;
-		return res[0];
+		var child = children.splice(index, 1)[0];
+		if (child != null) child.parent = null;
+		return child;
+	}
+
+	public function removeAllChildren()
+	{
+		#if (flash||js)
+		while (container.numChildren) container.removeChildAt(0);
+		#end
+		for (child in children)
+			child.parent = null;
+		return children.splice(0, children.length);
 	}
 
 	public function getChildIndex(item:TileBase)
