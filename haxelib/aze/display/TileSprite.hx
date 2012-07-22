@@ -113,10 +113,9 @@ class TileSprite extends TileBase
 	}
 
 	public var scale(get_scale, set_scale):Float;
-	inline function get_scale():Float {
-		return _scaleX;
-	}
-	function set_scale(value:Float):Float {
+	inline function get_scale():Float { return _scaleX; }
+	function set_scale(value:Float):Float 
+	{
 		if (_scaleX != value) {
 			_scaleX = value;
 			_scaleY = value;
@@ -126,10 +125,9 @@ class TileSprite extends TileBase
 	}
 
 	public var scaleX(get_scaleX, set_scaleX):Float;
-	inline function get_scaleX():Float {
-		return _scaleX;
-	}
-	function set_scaleX(value:Float):Float {
+	inline function get_scaleX():Float { return _scaleX; }
+	function set_scaleX(value:Float):Float 
+	{
 		if (_scaleX != value) {
 			_scaleX = value;
 			dirty = true;
@@ -138,14 +136,28 @@ class TileSprite extends TileBase
 	}
 
 	public var scaleY(get_scaleY, set_scaleY):Float;
-	inline function get_scaleY():Float {
-		return _scaleY;
-	}
-	function set_scaleY(value:Float):Float {
+	inline function get_scaleY():Float { return _scaleY; }
+	function set_scaleY(value:Float):Float 
+	{
 		if (_scaleY != value) {
 			_scaleY = value;
 			dirty = true;
 		}
+		return value;
+	}
+
+	public var color(get_color, set_color):Int;
+	function get_color():Int 
+	{ 
+		return Std.int(r * 256.0) << 16
+			+ Std.int(g * 256.0) << 8
+			+ Std.int(b * 256.0);
+	}
+	function set_color(value:Int):Int 
+	{
+		r = (value >> 16) / 255.0;
+		g = ((value >> 8) & 0xff) / 255.0;
+		b = (value & 0xff) / 255.0;
 		return value;
 	}
 

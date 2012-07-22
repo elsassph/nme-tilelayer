@@ -141,39 +141,6 @@ class TileLayer extends TileGroup
 
 
 /**
- * TileLayer spritesheets requirements 
- */
-interface TilesheetEx
-{
-	/**
-	 * Filter the sprites by name (fullname starting with name)
-	 * @return return all matching sprite indices
-	 */
-	function getAnim(name:String):Array<Int>;
-
-	/**
-	 * A sprite size is a Rectangle with:
-	 * - left/top can be non zero to indicate that the sprite is trimmed
-	 * - width/height are always the full sprite's dimensions
-	 * @return the sprite's rectangle
-	 */
-	function getSize(indice:Int):nme.geom.Rectangle;
-
-	#if (flash||js)
-	/**
-	 * @return a standalone BitmapData for the specified sprite
-	 */
-	function getBitmap(indice:Int):BitmapData;
-	#else
-	/**
-	 * Tilesheet's drawTiles is only required on native platforms
-	 */
-	function drawTiles(graphics:Graphics, tileData:Array<Float>, smooth:Bool = false, flags:Int = 0):Void;
-	#end
-}
-
-
-/**
  * @private base tile type
  */
 class TileBase implements Public
