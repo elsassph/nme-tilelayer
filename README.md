@@ -53,8 +53,8 @@ Render it:
     addChild(layer.view); // layer is NOT a DisplayObject
     layer.render();
 
-Features
---------
+Tiles Features
+--------------
 
 **TileLayer properties**
  - view *(root DisplayObject)*
@@ -65,7 +65,7 @@ Features
  - useTint
 
 **TileSprite / TileClip properties**
- - tile *(currently readonly)*
+ - tile (set image)
  - x, y
  - rotation
  - scale / scaleX / scaleY
@@ -76,6 +76,7 @@ Features
  - visible
 
 **TileClip properties**
+ - tile (set anim)
  - animated
  - loop
  - currentFrame
@@ -89,9 +90,20 @@ Features
  - visible
  - addChild / addChildAt / removeChild / removeChildAt
 
+Spritesheets Features
+---------------------
+
+**SparrowTilesheet**
+ - extends TilesheetEx to parse Sparrow engine tilesheets,
+ - supports animation and trimming.
+
+**TilesheetEx**
+ - Base class required by TileLayer,
+ - animations are matched by name (startsWith) and cached,
+ - can be used directly to dynamically build a spritesheet: TilesheetEx.createFromImages, TilesheetEx.createFromAssets
+
 TODO
 ----
- - actually change tile when setting .tile
  - fix TileGroup width/height measurement
  - support useTint in Flash/JS fallback
 
