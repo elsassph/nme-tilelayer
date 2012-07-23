@@ -86,7 +86,12 @@ class TileLayer extends TileGroup
 		{
 			var child = group.children[i];
 			if (child.animated) child.step(elapsed);
-			if (!child.visible) continue;
+
+			#if (flash||js)
+			#else
+			if (!child.visible) 
+				continue;
+			#end
 
 			#if (flash||js)
 			var group:TileGroup = Std.is(child, TileGroup) ? cast child : null;
@@ -101,19 +106,24 @@ class TileLayer extends TileGroup
 			else 
 			{
 				var sprite:TileSprite = cast child;
-				if (sprite.alpha <= 0.0) continue;
 
 				#if (flash||js)
-				var m = sprite.bmp.transform.matrix;
-				m.identity();
-				m.concat(sprite.matrix);
-				m.translate(sprite.x, sprite.y);
-				sprite.bmp.transform.matrix = m;
-				sprite.bmp.blendMode = blend;
-				sprite.bmp.alpha = sprite.alpha;
-				// TODO apply tint
+				if (sprite.visible && sprite.alpha > 0.0)
+				{
+					var m = sprite.bmp.transform.matrix;
+					m.identity();
+					m.concat(sprite.matrix);
+					m.translate(sprite.x, sprite.y);
+					sprite.bmp.transform.matrix = m;
+					sprite.bmp.blendMode = blend;
+					sprite.bmp.alpha = sprite.alpha;
+					sprite.bmp.visible = true;
+					// TODO apply tint
+				}
+				else sprite.bmp.visible = false;
 
 				#else
+				if (sprite.alpha <= 0.0) continue;
 				list[index] = sprite.x + gx;
 				list[index+1] = sprite.y + gy;
 				list[index+2] = sprite.indice;

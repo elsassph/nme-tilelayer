@@ -109,7 +109,7 @@ class TileGroup extends TileBase
 	public function removeAllChildren()
 	{
 		#if (flash||js)
-		while (container.numChildren) container.removeChildAt(0);
+		while (container.numChildren > 0) container.removeChildAt(0);
 		#end
 		for (child in children)
 			child.parent = null;
