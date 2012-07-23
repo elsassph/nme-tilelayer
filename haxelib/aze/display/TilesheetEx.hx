@@ -90,7 +90,7 @@ class TilesheetEx extends Tilesheet
 	}
 	#end
 
-	static public function createFromAssets(fileNames:Array<String>)
+	static public function createFromAssets(fileNames:Array<String>, padding:Int=0, spacing:Int=0)
 	{
 		var names:Array<String> = [];
 		var images:Array<BitmapData> = [];
@@ -101,23 +101,25 @@ class TilesheetEx extends Tilesheet
 			names.push(name);
 			images.push(image);
 		}
-		return createFromImages(names, images);
+		return createFromImages(names, images, padding, spacing);
 	}
 
-	static public function createFromImages(names:Array<String>, images:Array<BitmapData>)
+	static public function createFromImages(names:Array<String>, images:Array<BitmapData>, padding:Int=0, spacing:Int=0)
 	{
 		var width = 0;
-		var height = 2;
+		var height = padding;
 		for(image in images)
 		{
-			if (image.width + 4 > width) width = image.width + 4;
-			height += image.height + 2;
+			if (image.width + padding*2 > width) width = image.width + padding*2;
+			height += image.height + spacing;
 		}
+		height -= spacing;
+		height += padding;
 
-		var img = new BitmapData(width, height, true, 0);
+		var img = new BitmapData(closestPow2(width), closestPow2(height), true, 0);
 		var sheet = new TilesheetEx(img);
 
-		var pos = new Point(2, 2);
+		var pos = new Point(padding, padding);
 		for(i in 0...images.length)
 		{
 			var image = images[i];
@@ -125,13 +127,20 @@ class TilesheetEx extends Tilesheet
 			#if (flash||js)
 			sheet.addDefinition(names[i], image.rect, image);
 			#else
-			var rect = new Rectangle(2, pos.y, image.width, image.height);
+			var rect = new Rectangle(padding, pos.y, image.width, image.height);
 			var center = new Point(image.width/2, image.height/2);
 			sheet.addDefinition(names[i], image.rect, rect, center);
 			#end
-			pos.y += image.height + 2;
+			pos.y += image.height + spacing;
 		}
 		return sheet;
+	}
+
+	static public function closestPow2(v:Int)
+	{
+		var p = 2;
+		while (p < v) p = p << 1;
+		return p;
 	}
 }
 

@@ -2,5 +2,5 @@
     <user name="elsassph"/>
     <tag v="nme"/>
     <description>Lightweight wrapper over NME's powerful but lowlevel 'drawTiles', with bitmap-based fallback for Flash/JS. Includes a Sparrow spritesheets parser supporting animations and trimming.</description>
-    <version name="0.2.6">TileClip currentFrame setter fix</version>
+    <version name="0.2.3">TilesheetEx is now concrete with helpers to create dynamic spritesheets</version>
 </project>
