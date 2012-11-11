@@ -1,6 +1,5 @@
 package aze.display;
 
-import flash.geom.Matrix;
 import haxe.Public;
 import nme.display.Bitmap;
 import nme.display.BitmapData;
@@ -8,6 +7,7 @@ import nme.display.BlendMode;
 import nme.display.DisplayObject;
 import nme.display.Graphics;
 import nme.display.Sprite;
+import nme.geom.Matrix;
 import nme.geom.Rectangle;
 import nme.Lib;
 
@@ -54,7 +54,7 @@ class TileLayer extends TileGroup
 		drawList.begin(elapsed == null ? 0 : elapsed, useTransforms, useAlpha, useTint, useAdditive);
 		renderGroup(this, 0, 0, 0);
 		drawList.end();
-		#if (flash||js)
+		#if flash
 		view.addChild(container);
 		#else
 		view.graphics.clear();
@@ -72,7 +72,7 @@ class TileLayer extends TileGroup
 		var offsetAlpha = drawList.offsetAlpha;
 		var elapsed = drawList.elapsed;
 
-		#if (flash||js)
+		#if flash
 		group.container.x = gx + group.x;
 		group.container.y = gy + group.y;
 		var blend = useAdditive ? BlendMode.ADD : BlendMode.NORMAL;
@@ -80,7 +80,7 @@ class TileLayer extends TileGroup
 		gx += group.x;
 		gy += group.y;
 		#end
-
+		
 		var n = group.numChildren;
 		for(i in 0...n)
 		{
@@ -103,7 +103,7 @@ class TileLayer extends TileGroup
 			{
 				var sprite:TileSprite = cast child;
 
-				#if (flash||js)
+				#if flash
 				if (sprite.visible && sprite.alpha > 0.0)
 				{
 					var m = sprite.bmp.transform.matrix;
@@ -173,7 +173,7 @@ class TileBase implements Public
 	{
 	}
 
-	#if (flash||js)
+	#if flash
 	function getView():DisplayObject { return null; }
 	#end
 }
@@ -204,28 +204,28 @@ class DrawList implements Public
 
 	function begin(elapsed:Int, useTransforms:Bool, useAlpha:Bool, useTint:Bool, useAdditive:Bool) 
 	{
-		#if (cpp||neko)
+		#if !flash
 		flags = 0;
 		fields = 3;
 		if (useTransforms) {
 			offsetTransform = fields;
 			fields += 4;
-			flags |= neash.display.Graphics.TILE_TRANS_2x2;
+			flags |= Graphics.TILE_TRANS_2x2;
 		}
 		else offsetTransform = 0;
 		if (useTint) {
 			offsetRGB = fields; 
 			fields+=3; 
-			flags |= neash.display.Graphics.TILE_RGB;
+			flags |= Graphics.TILE_RGB;
 		}
 		else offsetRGB = 0;
 		if (useAlpha) {
 			offsetAlpha = fields; 
 			fields++; 
-			flags |= neash.display.Graphics.TILE_ALPHA;
+			flags |= Graphics.TILE_ALPHA;
 		}
 		else offsetAlpha = 0;
-		if (useAdditive) flags |= neash.display.Graphics.TILE_BLEND_ADD;
+		if (useAdditive) flags |= Graphics.TILE_BLEND_ADD;
 		#end
 
 		if (elapsed > 0) this.elapsed = elapsed;

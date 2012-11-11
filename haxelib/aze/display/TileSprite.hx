@@ -22,7 +22,7 @@ class TileSprite extends TileBase
 	var _scaleY:Float;
 	var _mirror:Int;
 
-	#if (cpp||neko)
+	#if !flash
 	var _transform:Array<Float>;
 	#else
 	var _matrix:Matrix;
@@ -43,7 +43,7 @@ class TileSprite extends TileBase
 		dirty = true;
 		this.tile = tile;
 		_indice = -1;
-		#if (flash||js)
+		#if flash
 		bmp = new Bitmap();
 		bmp.y = -9999; // jeash flicker
 		_matrix = new Matrix();
@@ -60,7 +60,7 @@ class TileSprite extends TileBase
 		size = layer.tilesheet.getSize(indice);
 	}
 
-	#if (flash||js)
+	#if flash
 	override public function getView():DisplayObject { return bmp; }
 	#end
 
@@ -82,7 +82,7 @@ class TileSprite extends TileBase
 		if (_indice != value)
 		{
 			_indice = value;
-			#if (flash||js)
+			#if flash
 			bmp.bitmapData = layer.tilesheet.getBitmap(value);
 			bmp.smoothing = layer.useSmoothing;
 			#end
@@ -161,7 +161,7 @@ class TileSprite extends TileBase
 		return value;
 	}
 
-	#if (cpp||neko)
+	#if !flash
 	public var transform(get_transform, null):Array<Float>;
 	function get_transform():Array<Float>
 	{
