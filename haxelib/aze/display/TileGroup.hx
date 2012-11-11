@@ -15,7 +15,7 @@ import nme.display.Sprite;
 class TileGroup extends TileBase
 {
 	public var children:Array<TileBase>;
-	#if (flash||js)
+	#if flash
 	var container:Sprite;
 	#end
 
@@ -23,7 +23,7 @@ class TileGroup extends TileBase
 	{
 		super();
 		children = new Array<TileBase>();
-		#if (flash||js)
+		#if flash
 		container = new Sprite();
 		#end
 	}
@@ -34,7 +34,7 @@ class TileGroup extends TileBase
 		initChildren();
 	}
 
-	#if (flash||js)
+	#if flash
 	override public function getView():DisplayObject { return container; }
 	#end
 
@@ -59,7 +59,7 @@ class TileGroup extends TileBase
 	public function addChild(item:TileBase)
 	{
 		removeChild(item);
-		#if (flash||js)
+		#if flash
 		container.addChild(item.getView());
 		#end
 		initChild(item);
@@ -69,7 +69,7 @@ class TileGroup extends TileBase
 	public function addChildAt(item:TileBase, index:Int)
 	{
 		removeChild(item);
-		#if (flash||js)
+		#if flash
 		container.addChildAt(item.getView(), index);
 		#end
 		initChild(item);
@@ -87,7 +87,7 @@ class TileGroup extends TileBase
 		var index = indexOf(item);
 		if (index >= 0) 
 		{
-			#if (flash||js)
+			#if flash
 			container.removeChild(item.getView());
 			#end
 			children.splice(index, 1);
@@ -98,7 +98,7 @@ class TileGroup extends TileBase
 
 	public function removeChildAt(index:Int)
 	{
-		#if (flash||js)
+		#if flash
 		container.removeChildAt(index);
 		#end
 		var child = children.splice(index, 1)[0];
@@ -108,7 +108,7 @@ class TileGroup extends TileBase
 
 	public function removeAllChildren()
 	{
-		#if (flash||js)
+		#if flash
 		while (container.numChildren > 0) container.removeChildAt(0);
 		#end
 		for (child in children)
@@ -124,7 +124,7 @@ class TileGroup extends TileBase
 	public inline function iterator() { return children.iterator(); }
 
 	public var numChildren(get_numChildren, null):Int;
-	inline function get_numChildren() { return children.length; }
+	inline function get_numChildren() { return children != null ? children.length : 0; }
 
 	public var height(get_height, null):Float; // TOFIX incorrect with sub groups
 	function get_height():Float 

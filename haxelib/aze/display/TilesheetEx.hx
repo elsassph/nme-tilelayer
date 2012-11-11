@@ -1,20 +1,11 @@
 package aze.display;
 
 import nme.display.BitmapData;
+import nme.display.Tilesheet;
 import nme.geom.Point;
 import nme.geom.Rectangle;
 
 using StringTools;
-
-// graceful Jeash compatibility
-#if js
-class Tilesheet { 
-	function new(img:BitmapData) {
-	}
-}
-#else
-typedef Tilesheet = nme.display.Tilesheet;
-#end
 
 /**
  * A cross-targets Tilesheet container, with animation and trimming support
@@ -31,7 +22,7 @@ class TilesheetEx extends Tilesheet
 	var defs:Array<String>;
 	var sizes:Array<Rectangle>;
 	var anims:Hash<Array<Int>>;
-	#if (flash||js)
+	#if flash
 	var bmps:Array<BitmapData>;
 	#end
 
@@ -42,12 +33,12 @@ class TilesheetEx extends Tilesheet
 		defs = new Array<String>();
 		anims = new Hash<Array<Int>>();
 		sizes = new Array<Rectangle>();
-		#if (flash||js)
+		#if flash
 		bmps = new Array<BitmapData>();
 		#end
 	}
 
-	#if (flash||js)
+	#if flash
 	function addDefinition(name:String, size:Rectangle, bmp:BitmapData)
 	{
 		defs.push(name);
@@ -83,7 +74,7 @@ class TilesheetEx extends Tilesheet
 		else return new Rectangle();
 	}
 
-	#if (flash||js)
+	#if flash
 	inline public function getBitmap(indice:Int):BitmapData
 	{
 		return bmps[indice];
@@ -124,7 +115,7 @@ class TilesheetEx extends Tilesheet
 		{
 			var image = images[i];
 			img.copyPixels(image, image.rect, pos, null, null, true);
-			#if (flash||js)
+			#if flash
 			sheet.addDefinition(names[i], image.rect, image);
 			#else
 			var rect = new Rectangle(padding, pos.y, image.width, image.height);
