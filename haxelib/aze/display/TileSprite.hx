@@ -34,22 +34,21 @@ class TileSprite extends TileBase
 	public var g:Float;
 	public var b:Float;
 
-	public function new(tile:String) 
+	public function new(layer:TileLayer, tile:String) 
 	{
-		super();
+		super(layer);
 		_rotation = 0;
 		alpha = _scaleX = _scaleY = 1;
 		_mirror = 0;
-		dirty = true;
-		this.tile = tile;
 		_indice = -1;
 		#if flash
 		bmp = new Bitmap();
-		bmp.y = -9999; // jeash flicker
 		_matrix = new Matrix();
 		#else
 		_transform = new Array<Float>();
 		#end
+		dirty = true;
+		this.tile = tile;
 	}
 
 	override public function init(layer:TileLayer):Void

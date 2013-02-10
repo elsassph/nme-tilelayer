@@ -19,9 +19,9 @@ class TileGroup extends TileBase
 	var container:Sprite;
 	#end
 
-	public function new()
+	public function new(layer:TileLayer)
 	{
-		super();
+		super(layer);
 		children = new Array<TileBase>();
 		#if flash
 		container = new Sprite();
@@ -31,17 +31,17 @@ class TileGroup extends TileBase
 	override public function init(layer:TileLayer):Void
 	{
 		this.layer = layer;
-		initChildren();
+		if (children != null) initChildren();
 	}
 
 	#if flash
 	override public function getView():DisplayObject { return container; }
 	#end
 
-	function initChild(item:TileBase)
+	inline function initChild(item:TileBase)
 	{
 		item.parent = this;
-		if (layer != null && item.layer == null) 
+		if (layer != null && item.layer != layer) 
 			item.init(layer);
 	}
 

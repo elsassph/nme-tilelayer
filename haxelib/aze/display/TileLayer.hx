@@ -33,7 +33,7 @@ class TileLayer extends TileGroup
 
 	public function new(tilesheet:TilesheetEx, smooth:Bool=true, additive:Bool=false)
 	{
-		super();
+		super(this);
 
 		view = new Sprite();
 		view.mouseEnabled = false;
@@ -45,7 +45,6 @@ class TileLayer extends TileGroup
 		useAlpha = true;
 		useTransforms = true;
 
-		init(this);
 		drawList = new DrawList();
 	}
 
@@ -158,8 +157,9 @@ class TileBase implements Public
 	var animated:Bool;
 	var visible:Bool;
 
-	function new()
+	function new(layer:TileLayer)
 	{
+		this.layer = layer;
 		x = y = 0.0;
 		visible = true;
 	}

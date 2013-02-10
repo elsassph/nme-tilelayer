@@ -36,20 +36,22 @@ Add/manipulate elements as a display list:
 
 ```as3
 // static tile
-var sprite = new TileSprite("spritename");
+var sprite = new TileSprite(layer, "spritename");
 layer.addChild(sprite);
 
 // animated tile
-var clip = new TileClip("animname");
+var clip = new TileClip(layer, "animname");
 clip.loop = false;
 layer.addChild(clip);
 
 // tile group (only translation, use the TileGroupTransform behaviour for more)
-var group = new TileGroup();
-group.addChild(new TileSprite("othername"));
-group.addChild(new TileClip("yetanother"));
+var group = new TileGroup(layer);
+group.addChild(new TileSprite(layer, "othername"));
+group.addChild(new TileClip(layer, "yetanother"));
 layer.addChild(group);
 ```
+*Note: you can provide* null *as the layer reference, but then Tiles will have a* null *size until 
+they are added to the layer's display list.*
 
 Render it:
 
@@ -77,7 +79,7 @@ Tiles Features
  - scale / scaleX / scaleY
  - alpha
  - mirror *(1: horizontal, 2: vertical)*
- - r / g / b
+ - r / g / b (defaults to 0.0, up to 1.0)
  - width / height *(readonly)*
  - visible
 
@@ -115,7 +117,6 @@ TODO
 
 Known issues
 ------------
- - Tiles' size is null until they are added to the virtual display list,
  - TileGroups inside TileGroup returns incorrect width/height.
 
 License

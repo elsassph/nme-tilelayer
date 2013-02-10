@@ -2,5 +2,5 @@
     <user name="elsassph"/>
     <tag v="nme"/>
     <description>Lightweight wrapper over NME's powerful but lowlevel 'drawTiles', with bitmap-based fallback for Flash/JS. Includes a Sparrow spritesheets parser supporting animations and trimming.</description>
-    <version name="0.2.7">Removed neash reference</version>
+    <version name="0.3.0">API changes: Tile* objects creation require the layer reference</version>
 </project>

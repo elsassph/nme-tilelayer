@@ -17,9 +17,9 @@ class TileClip extends TileSprite
 	var time:Int;
 	var prevFrame:Int;
 
-	public function new(tile:String, fps = 18)
+	public function new(layer:TileLayer, tile:String, fps = 18)
 	{
-		super(tile);
+		super(layer, tile);
 		this.fps = fps;
 		animated = loop = true;
 		time = 0;
