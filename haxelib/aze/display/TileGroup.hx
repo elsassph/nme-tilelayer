@@ -51,12 +51,12 @@ class TileGroup extends TileBase
 			initChild(child);
 	}
 
-	public inline function indexOf(item:TileBase)
+	public inline function indexOf(item:TileBase):Int
 	{
 		return Lambda.indexOf(children, item);
 	}
 
-	public function addChild(item:TileBase)
+	public function addChild(item:TileBase):Int
 	{
 		removeChild(item);
 		#if flash
@@ -66,7 +66,7 @@ class TileGroup extends TileBase
 		return children.push(item);
 	}
 
-	public function addChildAt(item:TileBase, index:Int)
+	public function addChildAt(item:TileBase, index:Int):Int
 	{
 		removeChild(item);
 		#if flash
@@ -77,7 +77,7 @@ class TileGroup extends TileBase
 		return index;
 	}
 
-	public function removeChild(item:TileBase)
+	public function removeChild(item:TileBase):TileBase
 	{
 		if (item.parent == null) return item;
 		if (item.parent != this) {
@@ -96,7 +96,7 @@ class TileGroup extends TileBase
 		return item;
 	}
 
-	public function removeChildAt(index:Int)
+	public function removeChildAt(index:Int):TileBase
 	{
 		#if flash
 		container.removeChildAt(index);
@@ -106,7 +106,7 @@ class TileGroup extends TileBase
 		return child;
 	}
 
-	public function removeAllChildren()
+	public function removeAllChildren():Array<TileBase>
 	{
 		#if flash
 		while (container.numChildren > 0) container.removeChildAt(0);
@@ -116,9 +116,22 @@ class TileGroup extends TileBase
 		return children.splice(0, children.length);
 	}
 
-	public function getChildIndex(item:TileBase)
+	public function getChildIndex(item:TileBase):Int
 	{
 		return indexOf(item);
+	}
+	
+	public function setChildIndex(item:TileBase, index:Int) 
+	{
+		var oldIndex = indexOf(item);
+		if (oldIndex >= 0 && index != oldIndex) 
+		{
+			#if flash
+			container.setChildIndex(item.getView(), index);
+			#end
+			children.splice(oldIndex, 1);
+			children.insert(index, item);
+		}
 	}
 
 	public inline function iterator() { return children.iterator(); }
