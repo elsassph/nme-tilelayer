@@ -75,6 +75,7 @@ Tiles Features
 **TileSprite / TileClip properties**
  - tile (set image)
  - x, y
+ - offset (change pivot, relative to center)
  - rotation
  - scale / scaleX / scaleY
  - alpha

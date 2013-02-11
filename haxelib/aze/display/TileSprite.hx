@@ -4,6 +4,7 @@ import aze.display.TileLayer;
 import nme.geom.Matrix;
 import nme.display.Bitmap;
 import nme.display.DisplayObject;
+import nme.geom.Point;
 import nme.geom.Rectangle;
 
 /**
@@ -33,6 +34,7 @@ class TileSprite extends TileBase
 	public var r:Float;
 	public var g:Float;
 	public var b:Float;
+	public var offset:Point;
 
 	public function new(layer:TileLayer, tile:String) 
 	{
