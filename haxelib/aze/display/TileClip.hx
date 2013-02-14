@@ -22,8 +22,6 @@ class TileClip extends TileSprite
 		super(layer, tile);
 		this.fps = fps;
 		animated = loop = true;
-		time = 0;
-		prevFrame = -1;
 	}
 
 	override function init(layer:TileLayer):Void
@@ -32,6 +30,8 @@ class TileClip extends TileSprite
 		frames = layer.tilesheet.getAnim(tile);
 		indice = frames[0];
 		size = layer.tilesheet.getSize(indice);
+		time = 0;
+		prevFrame = -1;
 	}
 
 	override function step(elapsed:Int)
