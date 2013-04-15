@@ -21,7 +21,13 @@ class TilesheetEx extends Tilesheet
 {
 	var defs:Array<String>;
 	var sizes:Array<Rectangle>;
-	var anims:Hash<Array<Int>>;
+	
+	#if haxe3
+		var anims:Map<String,Array<Int>>;
+	#else
+		var anims:Hash<Array<Int>>;
+	#end
+	
 	#if flash
 	var bmps:Array<BitmapData>;
 	#end
@@ -31,7 +37,13 @@ class TilesheetEx extends Tilesheet
 		super(img);
 
 		defs = new Array<String>();
-		anims = new Hash<Array<Int>>();
+		
+		#if haxe3
+			anims = new Map < String, Array<Int> > ();
+		#else
+			anims = new Hash <Array<Int> > ();
+		#end
+		
 		sizes = new Array<Rectangle>();
 		#if flash
 		bmps = new Array<BitmapData>();

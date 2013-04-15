@@ -1,7 +1,9 @@
 package aze.display;
 
 import browser.geom.Point;
-import haxe.Public;
+#if !haxe3
+	import haxe.Public;
+#end
 import nme.display.Bitmap;
 import nme.display.BitmapData;
 import nme.display.BlendMode;
@@ -170,14 +172,18 @@ class TileLayer extends TileGroup
 /**
  * @private base tile type
  */
-class TileBase implements Public
+#if haxe3
+	class TileBase
+#else
+	class TileBase implements Public
+#end
 {
-	var layer:TileLayer;
-	var parent:TileGroup;
-	var x:Float;
-	var y:Float;
-	var animated:Bool;
-	var visible:Bool;
+	public var layer:TileLayer;
+	public var parent:TileGroup;
+	public var x:Float;
+	public var y:Float;
+	public var animated:Bool;
+	public var visible:Bool;
 
 	function new(layer:TileLayer)
 	{
@@ -204,27 +210,39 @@ class TileBase implements Public
 /**
  * @private render buffer
  */
-class DrawList implements Public
+#if haxe3
+	class DrawList
+#else
+	class DrawList implements Public
+#end
 {
-	var list:Array<Float>;
-	var index:Int;
-	var fields:Int;
-	var offsetTransform:Int;
-	var offsetRGB:Int;
-	var offsetAlpha:Int;
-	var flags:Int;
-	var time:Int;
-	var elapsed:Int;
-	var runs:Int;
+	public var list:Array<Float>;
+	public var index:Int;
+	public var fields:Int;
+	public var offsetTransform:Int;
+	public var offsetRGB:Int;
+	public var offsetAlpha:Int;
+	public var flags:Int;
+	public var time:Int;
+	public var elapsed:Int;
+	public var runs:Int;
 
-	function new() 
+	#if haxe3
+		public function new() 
+	#else
+		function new() 
+	#end
 	{
 		list = new Array<Float>();
 		elapsed = 0;
 		runs = 0;
 	}
-
-	function begin(elapsed:Int, useTransforms:Bool, useAlpha:Bool, useTint:Bool, useAdditive:Bool) 
+	
+	#if haxe3
+		public function begin(elapsed:Int, useTransforms:Bool, useAlpha:Bool, useTint:Bool, useAdditive:Bool) 
+	#else
+		function begin(elapsed:Int, useTransforms:Bool, useAlpha:Bool, useTint:Bool, useAdditive:Bool) 
+	#end
 	{
 		#if !flash
 		flags = 0;
@@ -263,7 +281,7 @@ class DrawList implements Public
 		}
 	}
 
-	function end()
+	public function end()
 	{
 		if (list.length > index) 
 		{
