@@ -25,8 +25,12 @@ Configure it:
 
 ```as3
 // sprite sheet
-var tilesheet = new SparrowTilesheet(
-    Assets.getBitmapData("assets/spritesheet.png"), Assets.getText("assets/spritesheet.xml"));
+var sheetData = Assets.getText("assets/spritesheet.xml");
+var tilesheet = new SparrowTilesheet(Assets.getBitmapData("assets/spritesheet.png"), sheetData);
+
+// you can now load higher/lower resolution textures seamlessly
+var tilesheet = new SparrowTilesheet(Assets.getBitmapData("assets/spritesheet@2x.png"), sheetData, 2);
+var tilesheet = new SparrowTilesheet(Assets.getBitmapData("assets/spritesheet-low.png"), sheetData, 0.5);
 
 // tile-layer
 var layer = new TileLayer(tilesheet); // optional flags: smoothing, additive blendmode
