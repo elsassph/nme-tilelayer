@@ -124,7 +124,7 @@ class TileLayer extends TileGroup
 				
 				if (sprite.offset != null) 
 				{
-					var off:Point = sprite.offset;					
+					var off:Point = sprite.offset;
 					if (offsetTransform > 0) {
 						var t = sprite.transform;
 						list[index] = sprite.x - off.x * t[0] - off.y * t[1] + gx;
@@ -170,33 +170,33 @@ class TileLayer extends TileGroup
 /**
  * @private base tile type
  */
-class TileBase implements Public
+class TileBase
 {
-	var layer:TileLayer;
-	var parent:TileGroup;
-	var x:Float;
-	var y:Float;
-	var animated:Bool;
-	var visible:Bool;
+	public var layer:TileLayer;
+	public var parent:TileGroup;
+	public var x:Float;
+	public var y:Float;
+	public var animated:Bool;
+	public var visible:Bool;
 
-	function new(layer:TileLayer)
+	public function new(layer:TileLayer)
 	{
 		this.layer = layer;
 		x = y = 0.0;
 		visible = true;
 	}
 
-	function init(layer:TileLayer):Void
+	public function init(layer:TileLayer):Void
 	{
 		this.layer = layer;
 	}
 
-	function step(elapsed:Int)
+	public function step(elapsed:Int)
 	{
 	}
 
 	#if flash
-	function getView():DisplayObject { return null; }
+	public function getView():DisplayObject { return null; }
 	#end
 }
 

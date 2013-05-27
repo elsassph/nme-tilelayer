@@ -6,7 +6,7 @@ import nme.geom.Rectangle;
 import nme.Lib;
 
 /**
- * Sparrow spritesheet parser for TileLayer
+parrow spritesheet parser for TileLayer
  * - supports animations
  * - supports sprite trimming
  * - does NOT support sprite rotation
@@ -15,9 +15,9 @@ import nme.Lib;
 class SparrowTilesheet extends TilesheetEx
 {
 
-	public function new(img:BitmapData, xml:String) 
+	public function new(img:BitmapData, xml:String, textureScale:Float = 1.0) 
 	{
-		super(img);
+		super(img, textureScale);
 		
 		var ins = new Point(0,0);
 		var x = new haxe.xml.Fast( Xml.parse(xml).firstElement() );
@@ -26,16 +26,18 @@ class SparrowTilesheet extends TilesheetEx
 		{
 			var name = texture.att.name;
 			var rect = new Rectangle(
-				Std.parseInt(texture.att.x), Std.parseInt(texture.att.y),
-				Std.parseInt(texture.att.width), Std.parseInt(texture.att.height));
-
+				Std.parseFloat(texture.att.x), Std.parseFloat(texture.att.y),
+				Std.parseFloat(texture.att.width), Std.parseFloat(texture.att.height));
+			
 			var size = if (texture.has.frameX) // trimmed
 					new Rectangle(
 						Std.parseInt(texture.att.frameX), Std.parseInt(texture.att.frameY),
 						Std.parseInt(texture.att.frameWidth), Std.parseInt(texture.att.frameHeight));
 				else 
-					new Rectangle(0,0, rect.width, rect.height);
-
+					new Rectangle(0, 0, rect.width, rect.height);
+			
+			trace([name, rect.x, rect.y, rect.width, rect.height, size.x, size.y, size.width, size.height]);
+			
 			#if flash
 			var bmp = new BitmapData(cast size.width, cast size.height, true, 0);
 			ins.x = -size.left;
@@ -43,7 +45,7 @@ class SparrowTilesheet extends TilesheetEx
 			bmp.copyPixels(img, rect, ins);
 			addDefinition(name, size, bmp);
 			#else
-			var center = new Point(size.x + size.width / 2, size.y + size.height / 2);
+			var center = new Point((size.x + size.width / 2), (size.y + size.height / 2));
 			addDefinition(name, size, rect, center);
 			#end
 		}

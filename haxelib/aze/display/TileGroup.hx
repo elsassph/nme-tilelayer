@@ -41,7 +41,7 @@ class TileGroup extends TileBase
 	inline function initChild(item:TileBase)
 	{
 		item.parent = this;
-		if (layer != null && item.layer != layer) 
+		if (layer != null) 
 			item.init(layer);
 	}
 

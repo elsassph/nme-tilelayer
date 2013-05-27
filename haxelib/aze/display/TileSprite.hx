@@ -22,6 +22,7 @@ class TileSprite extends TileBase
 	var _scaleX:Float;
 	var _scaleY:Float;
 	var _mirror:Int;
+	var _offset:Point;
 
 	#if !flash
 	var _transform:Array<Float>;
@@ -34,7 +35,6 @@ class TileSprite extends TileBase
 	public var r:Float;
 	public var g:Float;
 	public var b:Float;
-	public var offset:Point;
 
 	public function new(layer:TileLayer, tile:String) 
 	{
@@ -171,19 +171,21 @@ class TileSprite extends TileBase
 			dirty = false;
 			var dirX:Int = mirror == 1 ? -1 : 1;
 			var dirY:Int = mirror == 2 ? -1 : 1;
+			var sx:Float = scaleX * layer.tilesheet.scale;
+			var sy:Float = scaleY * layer.tilesheet.scale;
 			if (rotation != 0) {
-				var cos = Math.cos(-rotation);
-				var sin = Math.sin(-rotation);
-				_transform[0] = dirX * cos * scaleX;
-				_transform[1] = dirY * sin * scaleY;
-				_transform[2] = -dirX * sin * scaleX;
-				_transform[3] = dirY * cos * scaleY;
+				var cos = Math.cos(rotation);
+				var sin = Math.sin(rotation);
+				_transform[0] = dirX * cos * sx;
+				_transform[1] = dirY * sin * sy;
+				_transform[2] = -dirX * sin * sx;
+				_transform[3] = dirY * cos * sy;
 			}
 			else {
-				_transform[0] = dirX * scaleX;
+				_transform[0] = dirX * sx;
 				_transform[1] = 0;
 				_transform[2] = 0;
-				_transform[3] = dirY * _scaleY;
+				_transform[3] = dirY * sy;
 			}
 		}
 		return _transform;
@@ -201,7 +203,7 @@ class TileSprite extends TileBase
 			var m = _matrix;
 			m.identity();
 			if (layer.useTransforms) {
-				m.scale(scaleX, scaleY);
+				m.scale(scaleX * layer.tilesheet.scale, scaleY * layer.tilesheet.scale);
 				if (mirror != 0) {
 					if (mirror == 1) { m.scale(-1, 1); m.translate(tileWidth * 2, 0); }
 					else if (mirror == 2) { m.scale(1, -1); m.translate(0, tileHeight * 2); }
@@ -226,5 +228,13 @@ class TileSprite extends TileBase
 	public var width(get_width, null):Float;
 	inline function get_width():Float {
 		return size.width * _scaleX;
+	}
+
+	public var offset(get_offset, set_offset):Point;
+	inline function get_offset():Point { return _offset; }
+	function set_offset(value:Point):Point
+	{
+		_offset = new Point(value.x / layer.tilesheet.scale, value.y / layer.tilesheet.scale);
+		return _offset;
 	}
 }
