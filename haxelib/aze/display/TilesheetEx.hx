@@ -31,7 +31,7 @@ class TilesheetEx extends Tilesheet
 	{
 		super(img);
 		
-		scale = textureScale;
+		scale = 1/textureScale;
 		defs = new Array<String>();
 		anims = new Hash<Array<Int>>();
 		sizes = new Array<Rectangle>();
