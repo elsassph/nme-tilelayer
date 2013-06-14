@@ -178,11 +178,11 @@ class TileSprite extends TileBase
 				var sin = Math.sin(rotation);
 				_transform[0] = dirX * cos * sx;
 				#if js
-				_transform[2] = dirY * sin * sy;
-				_transform[1] = -dirX * sin * sx;
-				#else
 				_transform[1] = dirY * sin * sy;
 				_transform[2] = -dirX * sin * sx;
+				#else
+				_transform[2] = dirY * sin * sy;
+				_transform[1] = -dirX * sin * sx;
 				#end
 				_transform[3] = dirY * cos * sy;
 			}
@@ -215,7 +215,7 @@ class TileSprite extends TileBase
 				}
 				if (rotation != 0) {
 					m.translate(-tileWidth, -tileHeight);
-					m.rotate(-rotation);
+					m.rotate(rotation);
 					m.translate(tileWidth, tileHeight);
 				}
 			}
