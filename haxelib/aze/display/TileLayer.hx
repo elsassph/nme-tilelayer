@@ -87,11 +87,13 @@ class TileLayer extends TileGroup
 			var child = group.children[i];
 			if (child.animated) child.step(elapsed);
 
-			#if flash
+			#if !flash
+			if (!child.visible) continue;
+			#end
+			
+			#if (flash||js)
 			var group:TileGroup = Std.is(child, TileGroup) ? cast child : null;
 			#else
-			if (!child.visible) 
-				continue;
 			var group:TileGroup = cast child;
 			#end
 
@@ -108,6 +110,7 @@ class TileLayer extends TileGroup
 				{
 					var m = sprite.bmp.transform.matrix;
 					m.identity();
+					if (sprite.offset != null) m.translate(-sprite.offset.x, -sprite.offset.y);
 					m.concat(sprite.matrix);
 					m.translate(sprite.x, sprite.y);
 					sprite.bmp.transform.matrix = m;
