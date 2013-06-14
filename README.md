@@ -9,7 +9,7 @@ A lightweight and very optimized wrapper over NME's powerful but lowlevel 'drawT
  - provides a basic display-list, spritesheet animations, mirroring (tile flipping), scale X/Y,
  - includes a Sparrow spritesheet parser, supporting trimming,
  - uses (and caches computations of) the new drawTiles' transform2x2 for native platforms,
- - uses Bitmaps for Flash & HTML5 target rendering,
+ - uses Bitmaps for Flash target rendering,
  - very optimized memory management, near-zero garbage collection.
 
 **Warning:** TileLayer is a "batching" class so it should be used to display "many elements" - that means you should 
