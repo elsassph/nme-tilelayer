@@ -239,7 +239,8 @@ class TileSprite extends TileBase
 	inline function get_offset():Point { return _offset; }
 	function set_offset(value:Point):Point
 	{
-		_offset = new Point(value.x / layer.tilesheet.scale, value.y / layer.tilesheet.scale);
+		if (value == null) _offset = null;
+		else _offset = new Point(value.x / layer.tilesheet.scale, value.y / layer.tilesheet.scale);
 		return _offset;
 	}
 }
