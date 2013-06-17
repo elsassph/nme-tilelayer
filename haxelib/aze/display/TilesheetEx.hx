@@ -41,14 +41,14 @@ class TilesheetEx extends Tilesheet
 	}
 
 	#if flash
-	function addDefinition(name:String, size:Rectangle, bmp:BitmapData)
+	public function addDefinition(name:String, size:Rectangle, bmp:BitmapData)
 	{
 		defs.push(name);
 		sizes.push(size);
 		bmps.push(bmp);
 	}
 	#else
-	function addDefinition(name:String, size:Rectangle, rect:Rectangle, center:Point)
+	public function addDefinition(name:String, size:Rectangle, rect:Rectangle, center:Point)
 	{
 		defs.push(name);
 		sizes.push(size);
