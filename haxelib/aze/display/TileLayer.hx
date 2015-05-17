@@ -106,7 +106,7 @@ class TileLayer extends TileGroup
 				var sprite:TileSprite = cast child;
 
 				#if flash
-				if (sprite.visible && sprite.alpha > 0.0)
+				if (sprite.parent.visible && sprite.visible && sprite.alpha > 0.0)
 				{
 					var m = sprite.bmp.transform.matrix;
 					m.identity();
